@@ -48,7 +48,7 @@ The accent palette is built around three classic phosphor types — P1 green, P3
 
 - **VSCode** — this theme
 - **Obsidian** — [forest-phosphor-obsidian](https://github.com/Steven-Theuerl/forest-phosphor-obsidian)
-- **iTerm2** — [forest-phosphor-iterm](https://github.com/Steven-Theuerl/forest-phosphor-iterm)
+- **iTerm2** — [forest-phosphor-iterm2](https://github.com/Steven-Theuerl/forest-phosphor-iterm2)
 
 All three share the same hex values; switch between apps without losing the look.
 

@@ -1,0 +1,41 @@
+{
+  "name": "forest-phosphor",
+  "displayName": "Forest Phosphor",
+  "description": "A dark theme inspired by CRT monitors — natural backdrops that are not too contrasting, glowing accents, and distinguished identities.",
+  "version": "0.0.2",
+  "publisher": "StevenTheuerl",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Steven-Theuerl/forest-phosphor-vscode"
+  },
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "dark",
+    "theme",
+    "phosphor",
+    "forest",
+    "green",
+    "CRT",
+    "color theme"
+  ],
+  "galleryBanner": {
+    "color": "#0F180C",
+    "theme": "dark"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Forest Phosphor",
+        "uiTheme": "vs-dark",
+        "path": "./themes/Forest_Phosphor-color-theme.json"
+      }
+    ]
+  }
+}

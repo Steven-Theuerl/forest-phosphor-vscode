@@ -19,3 +19,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.4.0] - 2026-05-02
 
 - Design overhaul to add much more functionality.
+
+## [0.4.1] - 2026-05-02
+
+- Massive Improvements to Markdown Rendering
+
+## [0.4.2] - 2026-05-02
+
+- Changed the red/coral to a lighter salmon

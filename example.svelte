@@ -43,7 +43,7 @@
 
   // ─── Stores ───────────────────────────────────────────────────────────────
 
-  const user             = writable<User | null>(null);
+    const user             = writable<User | null>(null);
   const loading          = writable(true);
   const formErrors       = writable<Record<string, string>>({});
   const notifQueue       = writable<Notification[]>([]);

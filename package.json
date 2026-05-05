@@ -36,6 +36,9 @@
         "uiTheme": "vs-dark",
         "path": "./themes/Forest_Phosphor-color-theme.json"
       }
+    ],
+    "markdown.previewStyles": [
+      "./media/markdown-preview.css"
     ]
   }
 }

@@ -43,13 +43,20 @@
 
   // ─── Stores ───────────────────────────────────────────────────────────────
 
-  const user       = writable<User | null>(null);
-  const loading    = writable(true);
-  const errors     = writable<Record<string, string>>({});
-  const notifQueue = writable<Notification[]>([]);
+  const user             = writable<User | null>(null);
+  const loading          = writable(true);
+  const formErrors       = writable<Record<string, string>>({});
+  const notifQueue       = writable<Notification[]>([]);
 
-  const isAdmin  = derived(user, $u => $u?.role === "admin");
-  const fullName = derived(user, $u => $u?.name ?? "Anonymous");
+  const isAdmin = derived(user, (currentUser) => {
+    if (currentUser === null) return false;
+    return currentUser.role === "admin";
+  });
+
+  const fullName = derived(user, (currentUser) => {
+    if (currentUser === null) return "Anonymous";
+    return currentUser.name;
+  });
 
   // ─── State ────────────────────────────────────────────────────────────────
 
@@ -60,19 +67,35 @@
   let selectedIndex = -1;
   let inputRef: HTMLInputElement;
 
+  // Local copies of settings used for two-way binding
+  let notificationsEnabled = false;
+  let darkModeEnabled = false;
+  let selectedLanguage = "en";
+
   // ─── Reactive declarations ────────────────────────────────────────────────
 
-  $: isFormDirty = form.name !== ($user?.name ?? "") ||
-                   form.email !== ($user?.email ?? "");
+  let isFormDirty = false;
+  $: {
+    const savedName  = $user !== null ? $user.name  : "";
+    const savedEmail = $user !== null ? $user.email : "";
+    isFormDirty = form.name !== savedName || form.email !== savedEmail;
+  }
 
   $: truncatedItems = items.slice(0, maxItems);
 
   $: if ($user) {
-    form = { name: $user.name, email: $user.email, bio: "" };
+    form                  = { name: $user.name, email: $user.email, bio: "" };
+    notificationsEnabled  = $user.settings.notifications;
+    darkModeEnabled       = $user.settings.darkMode;
+    selectedLanguage      = $user.settings.language;
   }
 
-  $: tabClass = (tab: string) =>
-    `tab ${activeTab === tab ? "tab--active" : ""}`;
+  function getTabClass(tabName: string): string {
+    if (activeTab === tabName) {
+      return "tab tab--active";
+    }
+    return "tab";
+  }
 
   // ─── Lifecycle ───────────────────────────────────────────────────────────
 
@@ -82,71 +105,117 @@
     error:  { message: string };
   }>();
 
-  let interval: ReturnType<typeof setInterval>;
+  let pollingInterval: ReturnType<typeof setInterval>;
 
   onMount(async () => {
     await fetchUser(userId);
-    interval = setInterval(pollNotifications, 30_000);
-    inputRef?.focus();
+    pollingInterval = setInterval(pollNotifications, 30_000);
+    if (inputRef) {
+      inputRef.focus();
+    }
   });
 
-  onDestroy(() => clearInterval(interval));
+  onDestroy(() => clearInterval(pollingInterval));
 
   // ─── Functions ────────────────────────────────────────────────────────────
 
   async function fetchUser(id: number) {
     loading.set(true);
     try {
-      const res = await fetch(`/api/users/${id}`);
-      user.set((await res.json()).data);
-    } catch (e) {
-      dispatch("error", { message: (e as Error).message });
+      const response     = await fetch(`/api/users/${id}`);
+      const responseData = await response.json();
+      user.set(responseData.data);
+    } catch (fetchError) {
+      dispatch("error", { message: (fetchError as Error).message });
     } finally {
       loading.set(false);
     }
   }
 
   async function pollNotifications() {
-    const current = get(user);
-    if (!current) return;
-    const res = await fetch(`/api/users/${current.id}/notifications`);
-    notifQueue.update(q => [...q, ...(await res.json()).data]);
+    const currentUser = get(user);
+    if (currentUser === null) return;
+
+    const response          = await fetch(`/api/users/${currentUser.id}/notifications`);
+    const responseData      = await response.json();
+    const newNotifications: Notification[] = responseData.data;
+
+    notifQueue.update(currentQueue => [...currentQueue, ...newNotifications]);
   }
 
   function validate(): boolean {
-    const errs: Record<string, string> = {};
-    if (!form.name.trim()) errs.name = "Name is required";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Invalid email";
-    errors.set(errs);
-    return !Object.keys(errs).length;
+    const validationErrors: Record<string, string> = {};
+
+    if (!form.name.trim()) {
+      validationErrors.name = "Name is required";
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(form.email)) {
+      validationErrors.email = "Invalid email";
+    }
+
+    formErrors.set(validationErrors);
+    return Object.keys(validationErrors).length === 0;
   }
 
   function handleSubmit() {
     if (!validate()) return;
-    onSave?.(form);
+
+    if (onSave !== null) {
+      onSave(form);
+    }
+
     dispatch("save", form);
     pushNotification("success", "Profile saved!");
   }
 
-  function pushNotification(type: Notification["type"], message: string) {
-    const id = crypto.randomUUID();
-    notifQueue.update(q => [...q, { id, type, message }]);
-    setTimeout(() => dismissNotification(id), 4_000);
+  function pushNotification(notifType: Notification["type"], message: string) {
+    const notificationId = crypto.randomUUID();
+    const newNotification: Notification = { id: notificationId, type: notifType, message };
+
+    notifQueue.update(currentQueue => [...currentQueue, newNotification]);
+    setTimeout(() => dismissNotification(notificationId), 4_000);
   }
 
-  function dismissNotification(id: string) {
-    notifQueue.update(q => q.filter(n => n.id !== id));
+  function dismissNotification(notificationId: string) {
+    notifQueue.update(currentQueue =>
+      currentQueue.filter(notification => notification.id !== notificationId)
+    );
   }
 
-  function handleKeydown(e: KeyboardEvent) {
-    if (e.key === "Escape")     { showPanel = false; return; }
-    if (e.key === "ArrowDown")  selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
-    if (e.key === "ArrowUp")    selectedIndex = Math.max(selectedIndex - 1, 0);
+  function handleKeydown(event: KeyboardEvent) {
+    if (event.key === "Escape") {
+      showPanel = false;
+      return;
+    }
+    if (event.key === "ArrowDown") {
+      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+    }
+    if (event.key === "ArrowUp") {
+      selectedIndex = Math.max(selectedIndex - 1, 0);
+    }
+  }
+
+  function handleSettingsChange() {
+    user.update(currentUser => {
+      if (currentUser === null) return null;
+      return {
+        ...currentUser,
+        settings: {
+          notifications: notificationsEnabled,
+          darkMode:      darkModeEnabled,
+          language:      selectedLanguage,
+        },
+      };
+    });
   }
 
   // property.property chains for theme testing ↓
-  function describeUser(u: User): string {
-    return `${u.name} — ${u.settings.language} — notifs ${u.settings.notifications ? "on" : "off"} — ${u.settings.darkMode ? "dark" : "light"} mode`;
+  function describeUser(targetUser: User): string {
+    const notificationStatus = targetUser.settings.notifications ? "on" : "off";
+    const colorMode          = targetUser.settings.darkMode ? "dark" : "light";
+    return `${targetUser.name} — ${targetUser.settings.language} — notifs ${notificationStatus} — ${colorMode} mode`;
   }
 </script>
 
@@ -157,14 +226,14 @@
 <div class="root" class:root--dark={theme === "dark"} data-testid="user-panel">
 
   <!-- Notification stack -->
-  {#each $notifQueue as notif (notif.id)}
+  {#each $notifQueue as notification (notification.id)}
     <div
-      class="notif notif--{notif.type}"
+      class="notif notif--{notification.type}"
       transition:fly={{ y: -20, duration: 250, easing: cubicOut }}
       role="alert"
     >
-      <span>{notif.message}</span>
-      <button on:click={() => dismissNotification(notif.id)} aria-label="Dismiss">×</button>
+      <span>{notification.message}</span>
+      <button on:click={() => dismissNotification(notification.id)} aria-label="Dismiss">×</button>
     </div>
   {/each}
 
@@ -177,7 +246,7 @@
   {:else if $user}
     <header class="header">
       <img
-        src={$user.avatar ?? "/default-avatar.png"}
+        src={$user.avatar !== null ? $user.avatar : "/default-avatar.png"}
         alt="{$user.name}'s avatar"
         class="avatar"
       />
@@ -188,21 +257,21 @@
           <span class="badge badge--admin">Admin</span>
         {/if}
       </div>
-      <button class="btn btn--icon" on:click={() => (showPanel = !showPanel)}>
+      <button class="btn btn--icon" on:click={() => { showPanel = !showPanel; }}>
         {showPanel ? "Close" : "Edit"}
       </button>
     </header>
 
     <!-- Tab bar -->
     <nav class="tabs" role="tablist">
-      {#each ["profile", "settings", "activity"] as tab}
+      {#each ["profile", "settings", "activity"] as tabName}
         <button
           role="tab"
-          class={tabClass(tab)}
-          aria-selected={activeTab === tab}
-          on:click={() => (activeTab = tab)}
+          class={getTabClass(tabName)}
+          aria-selected={activeTab === tabName}
+          on:click={() => { activeTab = tabName; }}
         >
-          {tab}
+          {tabName}
         </button>
       {/each}
     </nav>
@@ -219,12 +288,12 @@
               <input
                 bind:this={inputRef}
                 bind:value={form.name}
-                class:field__input--error={$errors.name}
+                class:field__input--error={$formErrors.name}
                 placeholder="Full name"
                 autocomplete="name"
               />
-              {#if $errors.name}
-                <small class="field__error">{$errors.name}</small>
+              {#if $formErrors.name}
+                <small class="field__error">{$formErrors.name}</small>
               {/if}
             </label>
 
@@ -233,12 +302,12 @@
               <input
                 bind:value={form.email}
                 type="email"
-                class:field__input--error={$errors.email}
+                class:field__input--error={$formErrors.email}
                 placeholder="you@example.com"
                 autocomplete="email"
               />
-              {#if $errors.email}
-                <small class="field__error">{$errors.email}</small>
+              {#if $formErrors.email}
+                <small class="field__error">{$formErrors.email}</small>
               {/if}
             </label>
 
@@ -258,16 +327,24 @@
     {:else if activeTab === "settings"}
       <section transition:slide={{ duration: 200 }}>
         <label class="toggle">
-          <input type="checkbox" bind:checked={$user.settings.notifications} />
+          <input
+            type="checkbox"
+            bind:checked={notificationsEnabled}
+            on:change={handleSettingsChange}
+          />
           <span>Email notifications</span>
         </label>
         <label class="toggle">
-          <input type="checkbox" bind:checked={$user.settings.darkMode} />
+          <input
+            type="checkbox"
+            bind:checked={darkModeEnabled}
+            on:change={handleSettingsChange}
+          />
           <span>Dark mode</span>
         </label>
-        <select bind:value={$user.settings.language}>
-          {#each ["en", "es", "fr", "de", "ja"] as lang}
-            <option value={lang}>{lang.toUpperCase()}</option>
+        <select bind:value={selectedLanguage} on:change={handleSettingsChange}>
+          {#each ["en", "es", "fr", "de", "ja"] as languageCode}
+            <option value={languageCode}>{languageCode.toUpperCase()}</option>
           {/each}
         </select>
       </section>
@@ -275,11 +352,11 @@
     {:else if activeTab === "activity"}
       <section transition:slide={{ duration: 200 }}>
         <ul class="item-list">
-          {#each truncatedItems as item, i (i)}
+          {#each truncatedItems as item, itemIndex (itemIndex)}
             <li
               class="item"
-              class:item--selected={selectedIndex === i}
-              on:click={() => (selectedIndex = i)}
+              class:item--selected={selectedIndex === itemIndex}
+              on:click={() => { selectedIndex = itemIndex; }}
             >
               {item}
             </li>

@@ -22,7 +22,7 @@ The language itself. Keywords and operators that appear on nearly every line —
 **Tier 2 — Amber ![#E8A030](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8A030_sm.png) `#E8A030`**
 Structural declarations. Medium frequency. These mark architectural decisions: where a function begins, what gets imported, where control flows back. `function`, `class`, `return`, `import`, `async`, `await`, `new`.
 
-**Tier 3 — Coral ![#F8906E](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/F8906E_sm.png) `#F8906E`**
+**Tier 3 — Coral ![#EA9575](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/EA9575_sm.png) `#EA9575`**
 Attention signals. Used sparingly. When you see coral, something demands focus: `this`, `self`, `throw`, `break`, `unsafe`. Also used for errors and invalid tokens.
 
 ### The object system — a blue gradient
@@ -93,7 +93,7 @@ Full semantic and TextMate highlighting for:
 | ![#C07AC8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/C07AC8.png) | `#C07AC8` | Classes, enums, structs, decorators                           |
 | ![#FFB4E2](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/FFB4E2.png) | `#FFB4E2` | Interfaces, type aliases, generics, primitives                |
 | ![#E8A030](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8A030.png) | `#E8A030` | Structural keywords — `function`, `class`, `return`, `import` |
-| ![#F8906E](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/F8906E.png) | `#F8906E` | Attention — `this`, `throw`, `unsafe`, errors                 |
+| ![#EA9575](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/EA9575.png) | `#EA9575` | Attention — `this`, `throw`, `unsafe`, errors                 |
 | ![#E8F0E8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8F0E8.png) | `#E8F0E8` | Literal values — numbers, booleans, `null`                    |
 | ![#5C8656](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5C8656.png) | `#5C8656` | Comments                                                      |
 | ![#5AE66A](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5AE66A.png) | `#5AE66A` | Git additions, terminal green, test pass                      |

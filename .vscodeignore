@@ -1,0 +1,14 @@
+.gitignore
+.vscodeignore
+colors/
+colors.json
+convert_colors.py
+example.json
+example.md
+example.py
+example.rs
+example.svelte
+example.ts
+images/
+theme.css
+vsc-extension-quickstart.md

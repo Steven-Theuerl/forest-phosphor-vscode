@@ -39,3 +39,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.4.5] - 2026-05-02
 
 - Improved Markdown rendering again
+
+## [0.4.51] - 2026-05-02
+
+- Update to README.md
+
+## [0.4.52] - 2026-05-02
+
+- Removing bloat from package

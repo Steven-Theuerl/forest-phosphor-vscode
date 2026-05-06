@@ -1,31 +1,48 @@
 # Forest Phosphor
 
-A dark VS Code color theme inspired by old CRT phosphor monitors.
+A dark VS Code color theme built around what tokens _do_, not what category they belong to.
 
 ![Forest Phosphor — full editor overview](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/images/vscodeHero.webp)
 
-Forest Phosphor blends the organic warmth of forest greens with the cool glow of phosphor displays. Backgrounds stay low-contrast for long sessions; syntax tokens are assigned roles based on what they _mean_ in code — not just what they are — so structure becomes legible at a glance.
+Cyan is a variable. Blue is a property. Yellow is callable. Purple is a concrete shape — class, struct, enum. Pink is an abstract one — interface, type, generic. Amber marks structure: `function`, `class`, `return`, `import`. Coral is for attention: `this`, `throw`, `unsafe`, errors. Eleven roles, eleven colors. After a few hours, your eye stops reading individual tokens and starts reading the shape of the code.
 
-Part of the [Forest Phosphor](https://forestphosphor.dev) family — a coordinated palette across VSCode, Obsidian, and iTerm2.
+The aesthetic is borrowed from old phosphor CRT monitors: forest-green prose, low-contrast backgrounds for long sessions, and a saturated phosphor cyan as the accent. Part of [the Forest Phosphor family](https://forestphosphor.dev) — coordinated palettes across VSCode, Obsidian, and iTerm2.
 
 ---
 
 ## Design philosophy
 
-Most themes assign color by token type. Forest Phosphor assigns color by **semantic role** — what a token _does_ in the code, not just what grammar category it belongs to. The goal is that after a short adjustment period, you stop reading individual tokens and start reading the shape of code.
+Most themes assign color by token type — keyword gets one color, identifier gets another, and the visual hierarchy ends up tracking the grammar instead of the meaning. Forest Phosphor assigns color by **semantic role**: what a token _does_ in the code. The grammar is incidental; the role is what you're actually reading for.
 
-The palette is built around three tiers of visual weight:
+The palette is built around three tiers of visual weight.
 
-**Tier 1 — Foreground green ![#A2EBA1](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/A2EBA1_sm.png) `#A2EBA1`**
-The language itself. Keywords and operators that appear on nearly every line — `if`, `else`, `for`, `const`, `&&`, `=`, `{}`, `;` — are rendered in the same soft green as plain text. They should be readable, not highlighted.
+### Tier 1 — Foreground green ![#A2EBA1](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/A2EBA1_sm.png) `#A2EBA1`
 
-**Tier 2 — Amber ![#E8A030](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8A030_sm.png) `#E8A030`**
-Structural declarations. Medium frequency. These mark architectural decisions: where a function begins, what gets imported, where control flows back. `function`, `class`, `return`, `import`, `async`, `await`, `new`.
+The language itself, and the structural scaffolding around your code.
 
-**Tier 3 — Coral ![#EA9575](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/EA9575_sm.png) `#EA9575`**
-Attention signals. Used sparingly. When you see coral, something demands focus: `this`, `self`, `throw`, `break`, `unsafe`. Also used for errors and invalid tokens.
+This covers more than most themes give it. Flow keywords like `if`, `else`, `for`, `while`, `&&`, `=`, `{}`, `;` get foreground green — they're the grammar of every line and shouldn't shout. But foreground also covers **parameters in function signatures** (rendered italic to distinguish them from keywords), and the operators and punctuation that hold expressions together.
+
+The reasoning: an `if` isn't an _action_, it's a structural marker telling you what kind of branch you're reading. A parameter like `id` in `function fetchUser(id, options)` isn't being called or declared in the way the function name is — it's a label for an incoming value. These tokens are part of the **semantic and contextual structure** of the file. They're meant to be _read_, the way you read the words "the" and "and" in prose. They earn their place by being legible, not by drawing your eye.
+
+The italic on parameters is doing real work here: it lets parameters share the foreground role (read with the language) while still being distinguishable from keywords. Style as a fourth dimension beyond hue.
+
+### Tier 2 — Amber ![#E8A030](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8A030_sm.png) `#E8A030`
+
+Structural declarations. Medium frequency. These are the tokens that mark architectural decisions: where a function begins, what gets imported, where control flows back. `function`, `class`, `return`, `import`, `async`, `await`, `new`, `yield`. HTML tags share this color — they're the structure of a page the way `function` is the structure of a module.
+
+When you scan a file looking for "where does the auth logic start?" — amber is what your eye lands on.
+
+### Tier 3 — Coral ![#EA9575](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/EA9575_sm.png) `#EA9575`
+
+Attention signals. Used sparingly on purpose. When you see coral, something demands focus: `this`, `self`, `super`, `throw`, `break`, `continue`, `unsafe`. Errors and invalid tokens get coral too. Coral interrupts your scan.
+
+If coral were common, it would lose meaning. The tier system depends on this one being rare.
+
+---
 
 ### The object system — a blue gradient
+
+Three colors describe the lifecycle of any object reference: what is it, what's on it, what does it do?
 
 | Color                                                                                                                           | Role                                       | Examples                               |
 | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------------------------------- |
@@ -33,20 +50,37 @@ Attention signals. Used sparingly. When you see coral, something demands focus: 
 | ![#77B0FF](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/77B0FF_sm.png) Blue `#77B0FF`   | Properties and fields — _what's on it?_    | `.displayName`, `.length`, object keys |
 | ![#D1CF32](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/D1CF32_sm.png) Yellow `#D1CF32` | Functions and methods — _what does it do?_ | `fetchUser()`, `.map()`, `groupBy()`   |
 
+Reading `user.profile.fetch()` becomes a sentence: cyan thing → blue attribute → yellow action.
+
 ### The type system — a purple gradient
+
+Two colors split the difference between types you instantiate and types you describe.
 
 | Color                                                                                                                           | Role                                         | Examples                                                        |
 | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------- |
 | ![#C07AC8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/C07AC8_sm.png) Purple `#C07AC8` | Concrete shapes — things you instantiate     | `class UserService`, `enum Direction`, decorators               |
 | ![#FFB4E2](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/FFB4E2_sm.png) Pink `#FFB4E2`   | Abstract shapes — contracts and descriptions | `interface User`, `type ApiResponse`, `<T>`, `string`, `number` |
 
-### Literal values and special delimiters
+If `new` it, it's purple. If you write a contract for it, it's pink. Primitives like `string` and `number` are pink because they describe what something must be, not a thing you construct.
 
-**Near-white ![#E8F0E8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8F0E8_sm.png) `#E8F0E8`** is reserved for values that are themselves the data — numbers (`42`, `3.14`), booleans (`true`, `false`), `null`, `undefined` — and for structural delimiters that sit outside normal expression flow: Rust lifetimes (`'a`), template/interpolation braces (`${}`), Svelte's reactive `$:`, labels.
+### Literal values
 
-### Nesting depth — a consistent rotation
+**Near-white ![#E8F0E8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8F0E8_sm.png) `#E8F0E8`** is reserved for values that _are_ the data — numbers (`42`, `3.14`), booleans (`true`, `false`), `null`, `undefined`. Also used for structural delimiters that sit outside normal expression flow: Rust lifetimes (`'a`), template/interpolation braces (`${}`), Svelte's reactive `$:`, labels.
 
-Bracket pair colorization and JSON/object key colors follow the **same depth rotation**, so closing brackets and their corresponding key always share a color:
+### Strings
+
+Strings get their own bright green ![#73e165](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/73e165_sm.png) `#73e165` — close to the foreground hue but saturated and brighter. They sit in the same family as prose but are clearly distinguished as quoted content.
+
+### Comments
+
+Comments are ![#5C8656](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5C8656_sm.png) `#5C8656` — a muted, mid-forest green rendered in italic. They recede into the background without disappearing entirely. JSDoc/TSDoc tags get a slightly brighter ![#7CBF78](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/7CBF78_sm.png) `#7CBF78` so doc-comment metadata stays scannable.
+
+---
+
+<details>
+<summary><strong>Reference: nesting depth rotation</strong></summary>
+
+Bracket pair colorization and JSON/object key colors follow the same depth rotation, so closing brackets and their corresponding key always share a color:
 
 | Depth | Swatch                                                                                                         | Color                |
 | ----- | -------------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -57,47 +91,46 @@ Bracket pair colorization and JSON/object key colors follow the **same depth rot
 | 5     | ![#7AF8FF](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/7AF8FF_sm.png) | Cyan `#7AF8FF`       |
 | 6     | ![#E8F0E8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8F0E8_sm.png) | Near-white `#E8F0E8` |
 
-Brackets start at near-white and work inward (white → blue → yellow → pink → purple → cyan), so the outermost scope is always the most neutral.
+Brackets start at near-white at the outermost scope and work inward (white → blue → yellow → pink → purple → cyan), so the outermost level is always the most neutral and deeper nesting gets warmer.
 
-### Comments
-
-Comments are ![#5C8656](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5C8656_sm.png) `#5C8656` — a muted, mid-forest green rendered in italic. They recede into the background without disappearing entirely. JSDoc/TSDoc tags get a slightly brighter ![#7CBF78](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/7CBF78_sm.png) `#7CBF78`.
+</details>
 
 ---
 
 ## Language coverage
 
-Full semantic and TextMate highlighting for:
+Verified most thoroughly for **TypeScript / JavaScript / JSX / TSX** — that's where most of the fine-tuning has happened. The rest is covered with hand-tuned scope rules:
 
-- **TypeScript / JavaScript / JSX / TSX** — primary language; most thoroughly verified
-- **Svelte** — template blocks, directives, component tags, reactive declarations
-- **Python** — `self`/`cls`, decorators, f-string delimiters, kwargs, typing builtins, magic methods
-- **Rust** — lifetimes, traits, structs/enums, macros, `unsafe`, attributes/derives, primitive types
-- **HTML / CSS / Markdown** — tags, attributes, pseudo-classes, at-rules, CSS class/ID selectors
+- **Svelte** — template blocks (`{#if}`, `{#each}`), directives, component tags, reactive declarations (`$:`)
+- **Python** — `self` / `cls` (coral), decorators (purple), f-string interpolation, kwargs (blue), typing builtins (`Optional`, `Union` — pink), magic methods
+- **Rust** — lifetimes (white), traits (pink), structs/enums (purple), macros (cyan), `unsafe` (coral), attributes/derives (purple), primitive types (pink)
+- **HTML / CSS / Markdown** — tags (amber), attributes (blue), pseudo-classes (pink), at-rules (amber), CSS class/ID selectors (yellow)
 - **JSON / YAML / TOML** — depth-aware key coloring
-- **Shell / Bash** — variables, builtins, functions
-- **GraphQL** — types, fields
+- **Shell / Bash** — variables (cyan), builtins (amber), functions (yellow)
+- **GraphQL** — types (pink), fields (blue)
 - **Go, C/C++, C#, Java** — structural keywords and type distinctions
+
+If you find a token in any language that doesn't read right, that's a real bug — open an issue.
 
 ---
 
 ## Palette reference
 
-| Swatch                                                                                                      | Hex       | Role                                                          |
-| ----------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------- |
-| ![#A2EBA1](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/A2EBA1.png) | `#A2EBA1` | Foreground — flow keywords, operators, punctuation            |
-| ![#73e165](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/73e165.png) | `#73e165` | Strings                                                       |
-| ![#7AF8FF](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/7AF8FF.png) | `#7AF8FF` | Variables, macros, enum members                               |
-| ![#77B0FF](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/77B0FF.png) | `#77B0FF` | Properties, fields, object keys                               |
-| ![#D1CF32](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/D1CF32.png) | `#D1CF32` | Functions and methods                                         |
-| ![#C07AC8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/C07AC8.png) | `#C07AC8` | Classes, enums, structs, decorators                           |
-| ![#FFB4E2](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/FFB4E2.png) | `#FFB4E2` | Interfaces, type aliases, generics, primitives                |
-| ![#E8A030](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8A030.png) | `#E8A030` | Structural keywords — `function`, `class`, `return`, `import` |
-| ![#EA9575](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/EA9575.png) | `#EA9575` | Attention — `this`, `throw`, `unsafe`, errors                 |
-| ![#E8F0E8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8F0E8.png) | `#E8F0E8` | Literal values — numbers, booleans, `null`                    |
-| ![#5C8656](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5C8656.png) | `#5C8656` | Comments                                                      |
-| ![#5AE66A](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5AE66A.png) | `#5AE66A` | Git additions, terminal green, test pass                      |
-| ![#D4A24A](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/D4A24A.png) | `#D4A24A` | Warnings, git modifications                                   |
+| Swatch                                                                                                      | Hex       | Role                                                           |
+| ----------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------- |
+| ![#A2EBA1](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/A2EBA1.png) | `#A2EBA1` | Foreground — flow keywords, operators, punctuation, parameters |
+| ![#73e165](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/73e165.png) | `#73e165` | Strings                                                        |
+| ![#7AF8FF](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/7AF8FF.png) | `#7AF8FF` | Variables, macros, enum members                                |
+| ![#77B0FF](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/77B0FF.png) | `#77B0FF` | Properties, fields, object keys                                |
+| ![#D1CF32](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/D1CF32.png) | `#D1CF32` | Functions and methods                                          |
+| ![#C07AC8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/C07AC8.png) | `#C07AC8` | Classes, enums, structs, decorators                            |
+| ![#FFB4E2](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/FFB4E2.png) | `#FFB4E2` | Interfaces, type aliases, generics, primitives                 |
+| ![#E8A030](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8A030.png) | `#E8A030` | Structural keywords — `function`, `class`, `return`, `import`  |
+| ![#EA9575](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/EA9575.png) | `#EA9575` | Attention — `this`, `throw`, `unsafe`, errors                  |
+| ![#E8F0E8](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/E8F0E8.png) | `#E8F0E8` | Literal values — numbers, booleans, `null`                     |
+| ![#5C8656](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5C8656.png) | `#5C8656` | Comments                                                       |
+| ![#5AE66A](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/5AE66A.png) | `#5AE66A` | Git additions, terminal green, test pass                       |
+| ![#D4A24A](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/colors/D4A24A.png) | `#D4A24A` | Warnings, git modifications                                    |
 
 ---
 
@@ -115,13 +148,15 @@ Full semantic and TextMate highlighting for:
 
 ### Diff view
 
+Forest Phosphor's git colors share the same role logic as the syntax palette — additions in saturated phosphor green, modifications in warm amber, deletions in coral.
+
 ![Diff view](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/images/vscodeDiff.webp)
 
 ### Integrated terminal
 
-![Integrated terminal](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/images/vscodeIntegratedTerminal.webp)
+The terminal screenshot pairs Forest Phosphor with the matching iTerm2 preset. Grab it at [forestphosphor.dev](https://forestphosphor.dev).
 
-> The terminal screenshot pairs Forest Phosphor with the matching iTerm2 preset. Grab it at [forestphosphor.dev](https://forestphosphor.dev).
+![Integrated terminal](https://raw.githubusercontent.com/Steven-Theuerl/forest-phosphor-vscode/trunk/images/vscodeIntegratedTerminal.webp)
 
 ---
 
@@ -137,15 +172,13 @@ All three share the same hex values; switch between apps without losing the look
 
 ## Reporting issues
 
-If you find an unstyled element or a token that doesn't read right, open an issue with a screenshot and the language being highlighted. Themes have long tails; user reports are how those gaps get found.
+If you find an unstyled element or a token that doesn't read right, open an issue with a screenshot and the language being highlighted. Themes have long tails — user reports are how the gaps get found.
 
 ---
 
 ## About
 
-Built by Steven Theuerl (August) ([@Steven-Theuerl](https://github.com/Steven-Theuerl)). The full design system lives at [forestphosphor.dev](https://forestphosphor.dev).
-
-<!-- If you find Forest Phosphor useful and want to support continued work: [Buy me a coffee](https://buymeacoffee.com/your-handle) -->
+Built by Steven Theuerl ([@Steven-Theuerl](https://github.com/Steven-Theuerl)). The full design system lives at [forestphosphor.dev](https://forestphosphor.dev).
 
 ## License
 

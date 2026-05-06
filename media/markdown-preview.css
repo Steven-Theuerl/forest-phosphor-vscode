@@ -14,39 +14,56 @@
  *
  * All rules are scoped via `[data-vscode-theme-name="Forest Phosphor"]` so
  * they only activate when this theme is the active workbench theme.
+ *
+ * Notes on parity with the Obsidian theme:
+ *   • VSCode markdown preview has no internal/wiki-link distinction —
+ *     every <a> is treated as external and gets the phosphor-glow yellow.
+ *   • Preview is read-only — no edit-mode (.cm-*) rules apply here.
+ *   • highlight.js (hljs) is the tokenizer, not Prism, so the fenced-code
+ *     class chain differs from Obsidian's preview layer. Same role
+ *     assignments, different class names.
  */
 
 [data-vscode-theme-name="Forest Phosphor"] {
-  --fp-bg-elevated:    #131C10;
-  --fp-border-subtle:  #1E3119;
-  --fp-fg-primary:     #A2EBA1;
-  --fp-fg-heading:     #7CBF78;
-  --fp-fg-muted:       #4E7249;
-  --fp-phosphor:       #7AF8FF;
-  --fp-coral:          #F8906E;
-  --fp-blue:           #77B0FF;
-  --fp-blue-link:      #328EEE;
-  --fp-magenta:        #C07AC8;
-  --fp-yellow:         #D4D256;
-  --fp-yellow-fn:      #D1CF32;
-  --fp-amber:          #E8A030;
-  --fp-orchid:         #FFB4E2;
-  --fp-white:          #E8F0E8;
-  --fp-green-string:   #73E165;
-  --fp-green-comment:  #5C8656;
-  --fp-green-doc:      #7CBF78;
-  --fp-deprecated:     #DD7975;
-  --fp-success:        #5AE66A;
+  /* ---- Palette ---- */
+  --fp-bg-elevated: #131c10;
+  --fp-border-subtle: #1e3119;
+  --fp-fg-primary: #a2eba1;
+  --fp-fg-heading: #7cbf78;
+  --fp-fg-muted: #4e7249;
+  --fp-phosphor: #7af8ff;
+  --fp-coral: #ea9575;
+  --fp-blue: #77b0ff;
+  --fp-blue-link: #328eee;
+  --fp-magenta: #c07ac8;
+  --fp-yellow: #d4d256; /* CSS-specific yellow (selectors) */
+  --fp-yellow-fn: #d1cf32; /* function/method color, also link color */
+  --fp-amber: #e8a030; /* structural keywords, italic emphasis */
+  --fp-orchid: #ffb4e2; /* abstract types, tags */
+  --fp-white: #e8f0e8; /* literal values */
+  --fp-green-string: #73e165;
+  --fp-green-comment: #5c8656;
+  --fp-green-doc: #7cbf78;
+  --fp-deprecated: #ea9575;
+  --fp-success: #5ae66a;
+
+  /* ---- Motion (phosphor-glow link transitions) ---- */
+  --fp-duration-fast: 140ms;
+  --fp-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 /* =============================================================================
    1. MARKDOWN PROSE
        Headings, emphasis, links, lists, blockquotes, tables, inline code, hr.
        Mirrors theme.css's Obsidian-side markdown rendering: phosphor-cyan
-       headings, coral bold, yellow italic, blue→cyan links.
+       headings, coral bold, amber italic, phosphor-glow yellow links.
    ============================================================================= */
 
-/* Headings — phosphor cyan top-three, heading-green tail */
+/* Headings — phosphor-cyan top-three, heading-green tail.
+   Generous top margin so headings read as section breaks rather than
+   bumping up against the prose above; h1 gets the most, scaling down
+   to h6. First heading in the doc strips top margin so the page doesn't
+   open with a giant blank space. */
 [data-vscode-theme-name="Forest Phosphor"] h1,
 [data-vscode-theme-name="Forest Phosphor"] h2,
 [data-vscode-theme-name="Forest Phosphor"] h3 {
@@ -56,46 +73,96 @@
 [data-vscode-theme-name="Forest Phosphor"] h1 {
   border-bottom: 1px solid var(--fp-border-subtle);
   padding-bottom: 0.3em;
+  margin-top: 2.4em;
+  margin-bottom: 0.7em;
 }
 [data-vscode-theme-name="Forest Phosphor"] h2 {
   border-bottom: 1px solid var(--fp-border-subtle);
   padding-bottom: 0.2em;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+[data-vscode-theme-name="Forest Phosphor"] h3 {
+  margin-top: 1.7em;
+  margin-bottom: 0.5em;
 }
 [data-vscode-theme-name="Forest Phosphor"] h4,
 [data-vscode-theme-name="Forest Phosphor"] h5 {
   color: var(--fp-fg-heading);
   font-weight: 700;
 }
+[data-vscode-theme-name="Forest Phosphor"] h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.4em;
+}
+[data-vscode-theme-name="Forest Phosphor"] h5 {
+  margin-top: 1.3em;
+  margin-bottom: 0.4em;
+}
 [data-vscode-theme-name="Forest Phosphor"] h6 {
   color: var(--fp-fg-muted);
   font-weight: 700;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
 }
 
-/* Bold — coral (theme.css --bold-color) */
+/* First heading in the document — strip top margin so the preview opens
+   flush with the top of the viewport. */
+[data-vscode-theme-name="Forest Phosphor"] body > h1:first-child,
+[data-vscode-theme-name="Forest Phosphor"] body > h2:first-child,
+[data-vscode-theme-name="Forest Phosphor"] body > h3:first-child,
+[data-vscode-theme-name="Forest Phosphor"] body > h4:first-child,
+[data-vscode-theme-name="Forest Phosphor"] body > h5:first-child,
+[data-vscode-theme-name="Forest Phosphor"] body > h6:first-child {
+  margin-top: 0.4em;
+}
+
+/* Bold — coral attention */
 [data-vscode-theme-name="Forest Phosphor"] strong,
 [data-vscode-theme-name="Forest Phosphor"] b {
   color: var(--fp-coral);
   font-weight: 700;
 }
 
-/* Italic — yellow (theme.css --italic-color) */
+/* Italic — amber (structural emphasis, mirrors theme.css) */
 [data-vscode-theme-name="Forest Phosphor"] em,
 [data-vscode-theme-name="Forest Phosphor"] i {
-  color: var(--fp-yellow);
+  color: var(--fp-amber);
   font-style: italic;
 }
 
-/* Links — blue, cyan on hover */
+/* =============================================================================
+   Links — phosphor-glow yellow
+       VSCode markdown preview has no wiki/internal-link distinction;
+       every <a> renders as a regular external link. Apply the function-
+       yellow phosphor-glow treatment used for external links in the
+       Obsidian theme. No underline — the warm-yellow halo is the
+       indicator that something is a link. Hover intensifies the color
+       and widens the halo; active hits the brightest tier.
+   ============================================================================= */
 [data-vscode-theme-name="Forest Phosphor"] a {
-  color: var(--fp-blue-link);
-  text-decoration: underline;
+  color: var(--fp-yellow-fn);
+  text-decoration: none;
+  text-shadow: 0 0 18px rgba(212, 162, 74, 0.35);
+  transition:
+    color var(--fp-duration-fast) var(--fp-ease-out),
+    text-shadow var(--fp-duration-fast) var(--fp-ease-out);
 }
 [data-vscode-theme-name="Forest Phosphor"] a:hover,
 [data-vscode-theme-name="Forest Phosphor"] a:focus {
-  color: var(--fp-phosphor);
+  cursor: pointer;
+  color: #e8e640;
+  text-shadow: 0 0 28px rgba(212, 162, 74, 0.6);
+  text-decoration: none;
+}
+[data-vscode-theme-name="Forest Phosphor"] a:active {
+  color: #f5f55a;
+  text-shadow: 0 0 40px rgba(212, 162, 74, 0.85);
 }
 
-/* Inline code — bordered phosphor chip */
+/* =============================================================================
+   Inline code — bordered cyan chip
+   ============================================================================= */
 [data-vscode-theme-name="Forest Phosphor"] :not(pre) > code {
   color: var(--fp-phosphor);
   background-color: var(--fp-bg-elevated);
@@ -105,7 +172,9 @@
   font-size: 0.9em;
 }
 
-/* Blockquote — cyan-bordered, heading-green italic body */
+/* =============================================================================
+   Blockquote — cyan-bordered, heading-green italic body
+   ============================================================================= */
 [data-vscode-theme-name="Forest Phosphor"] blockquote {
   background-color: var(--fp-bg-elevated);
   border-left: 3px solid var(--fp-phosphor);
@@ -162,21 +231,188 @@
        Maps every `.hljs-*` class to the Forest Phosphor tokenColors as
        closely as hljs's coarser category model allows. Source of truth:
        `themes/Forest_Phosphor-color-theme.json`.
+
+       Container chrome mirrors theme.css's Obsidian read-mode panels:
+         • elevated bg + 1px subtle border + 6px radius
+         • top hairline (phosphor-cyan gradient, very low alpha)
+         • language pill in top-right (per .language-* class)
+         • soft inset cyan bloom on hover
    ============================================================================= */
 
-/* Container — match editor foreground inside fenced blocks */
+/* Container — match editor foreground inside fenced blocks. Position
+   relative so ::before/::after pseudos can anchor for the hairline + pill.
+   Extra top padding accommodates the hairline + pill. */
 [data-vscode-theme-name="Forest Phosphor"] pre {
+  position: relative;
   background-color: var(--fp-bg-elevated);
   border: 1px solid var(--fp-border-subtle);
   border-radius: 6px;
-  padding: 1em;
+  padding: 1.6em 1em 1em;
+  margin: 0.9em 0;
+  transition:
+    box-shadow var(--fp-duration-fast) var(--fp-ease-out),
+    border-color var(--fp-duration-fast) var(--fp-ease-out);
 }
+
+/* Top-bar hairline — phosphor-cyan gradient that fades at the edges.
+   Drawn as ::before so it sits inside the rounded border. */
+[data-vscode-theme-name="Forest Phosphor"] pre::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(122, 248, 255, 0),
+    rgba(122, 248, 255, 0.35) 18%,
+    rgba(122, 248, 255, 0.35) 82%,
+    rgba(122, 248, 255, 0)
+  );
+  pointer-events: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+/* Language pill — VSCode's markdown renderer puts the language as a class
+   on the inner <code> element (e.g. `<code class="language-typescript">`).
+   We can't read the actual language string in pure CSS (no attr() outside
+   the `content` of pseudos, and class-name extraction needs JS), so the
+   approach is: a generic "CODE" fallback for any [class*="language-"], then
+   per-language overrides for the common ones. */
+[data-vscode-theme-name="Forest Phosphor"]
+  pre
+  > code[class*="language-"]::before {
+  content: "CODE";
+  position: absolute;
+  top: -1.15em; /* sit inside the pre's top padding */
+  right: 0;
+  font-family: var(--vscode-editor-font-family, "Iosevka", "Menlo", monospace);
+  font-size: 0.65em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fp-green-comment);
+  opacity: 0.75;
+  pointer-events: none;
+  transition:
+    opacity var(--fp-duration-fast) var(--fp-ease-out),
+    color var(--fp-duration-fast) var(--fp-ease-out);
+}
+/* Per-language pill text — overrides the generic CODE label. */
+[data-vscode-theme-name="Forest Phosphor"]
+  pre
+  > code.language-typescript::before {
+  content: "TS";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-tsx::before {
+  content: "TSX";
+}
+[data-vscode-theme-name="Forest Phosphor"]
+  pre
+  > code.language-javascript::before {
+  content: "JS";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-jsx::before {
+  content: "JSX";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-svelte::before {
+  content: "SVELTE";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-python::before {
+  content: "PY";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-rust::before {
+  content: "RS";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-go::before {
+  content: "GO";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-html::before {
+  content: "HTML";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-css::before {
+  content: "CSS";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-scss::before {
+  content: "SCSS";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-json::before {
+  content: "JSON";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-yaml::before {
+  content: "YAML";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-toml::before {
+  content: "TOML";
+}
+[data-vscode-theme-name="Forest Phosphor"]
+  pre
+  > code.language-markdown::before {
+  content: "MD";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-bash::before {
+  content: "BASH";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-sh::before {
+  content: "SH";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-zsh::before {
+  content: "ZSH";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-shell::before {
+  content: "SHELL";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-graphql::before {
+  content: "GQL";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-sql::before {
+  content: "SQL";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-cpp::before {
+  content: "C++";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-c::before {
+  content: "C";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-csharp::before {
+  content: "C#";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-java::before {
+  content: "JAVA";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-ruby::before {
+  content: "RB";
+}
+[data-vscode-theme-name="Forest Phosphor"] pre > code.language-php::before {
+  content: "PHP";
+}
+
+/* Hover glow — soft inset cyan bloom + slightly brighter border. Mirrors
+   the theme.css callout treatment so blocks feel "live" when focused. */
+[data-vscode-theme-name="Forest Phosphor"] pre:hover {
+  border-color: rgba(122, 248, 255, 0.25);
+  box-shadow: inset 0 0 24px rgba(122, 248, 255, 0.04);
+}
+[data-vscode-theme-name="Forest Phosphor"]
+  pre:hover
+  > code[class*="language-"]::before {
+  opacity: 1;
+  color: var(--fp-green-doc);
+}
+
+/* hljs container — default to cyan inside fenced blocks so untagged
+   identifiers fall through to the variable role rather than prose green.
+   Tagged tokens (.hljs-keyword, .hljs-string, etc.) override with their
+   role colors. Net effect: variables read cyan, keywords amber, strings
+   bright green, numbers/booleans white — matches theme.css behavior. */
 [data-vscode-theme-name="Forest Phosphor"] .hljs {
-  color: var(--fp-fg-primary);
+  color: var(--fp-phosphor);
   background-color: transparent;
 }
 
-/* Comments — muted phosphor green, italic */
+/* Comments — muted forest green, italic */
 [data-vscode-theme-name="Forest Phosphor"] .hljs-comment,
 [data-vscode-theme-name="Forest Phosphor"] .hljs-quote {
   color: var(--fp-green-comment);
@@ -287,10 +523,14 @@
   color: var(--fp-blue);
 }
 
-/* Regex / template tags — cyan */
-[data-vscode-theme-name="Forest Phosphor"] .hljs-regexp,
-[data-vscode-theme-name="Forest Phosphor"] .hljs-template-tag {
+/* Regex literals — cyan (treated as variable-like data, matches theme JSON) */
+[data-vscode-theme-name="Forest Phosphor"] .hljs-regexp {
   color: var(--fp-phosphor);
+}
+
+/* Tagged template tags (e.g. html`…`, css`…`) — yellow (callable). */
+[data-vscode-theme-name="Forest Phosphor"] .hljs-template-tag {
+  color: var(--fp-yellow-fn);
 }
 
 /* CSS selectors — yellow ids/classes, orchid pseudo-selectors */
@@ -303,9 +543,10 @@
   color: var(--fp-orchid);
 }
 
-/* Markup decorations inside fenced blocks (e.g. nested markdown sample) */
+/* Markup decorations inside fenced blocks (e.g. nested markdown sample).
+   Mirror the prose-side styles: bold = coral, italic = amber. */
 [data-vscode-theme-name="Forest Phosphor"] .hljs-emphasis {
-  color: var(--fp-yellow);
+  color: var(--fp-amber);
   font-style: italic;
 }
 [data-vscode-theme-name="Forest Phosphor"] .hljs-strong {
@@ -315,19 +556,25 @@
 
 /* Diff additions / deletions — Forest Phosphor accent greens / corals */
 [data-vscode-theme-name="Forest Phosphor"] .hljs-addition {
-  background-color: var(--vscode-diffEditor-insertedTextBackground, rgba(90, 230, 106, 0.18));
+  background-color: var(
+    --vscode-diffEditor-insertedTextBackground,
+    rgba(90, 230, 106, 0.18)
+  );
   color: var(--fp-success);
   display: inline-block;
   width: 100%;
 }
 [data-vscode-theme-name="Forest Phosphor"] .hljs-deletion {
-  background-color: var(--vscode-diffEditor-removedTextBackground, rgba(248, 144, 110, 0.18));
+  background-color: var(
+    --vscode-diffEditor-removedTextBackground,
+    rgba(234, 149, 117, 0.18)
+  );
   color: var(--fp-coral);
   display: inline-block;
   width: 100%;
 }
 
-/* Deprecated tokens — strikethrough rust-coral */
+/* Deprecated tokens — strikethrough desaturated coral */
 [data-vscode-theme-name="Forest Phosphor"] .hljs-deprecated {
   color: var(--fp-deprecated);
   text-decoration: line-through;

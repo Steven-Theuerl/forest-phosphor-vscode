@@ -100,7 +100,6 @@ class User:
             "github":  self.profile.social.github,
         }
 
-
 @dataclass
 class ApiError:
     code:    str

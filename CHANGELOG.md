@@ -27,3 +27,15 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.4.2] - 2026-05-02
 
 - Changed the red/coral to a lighter salmon
+
+## [0.4.3] - 2026-05-02
+
+- Changed Deprecated to match "Attention"
+
+## [0.4.4] - 2026-05-02
+
+- Aligned markdown alongside Obsidian theming
+
+## [0.4.5] - 2026-05-02
+
+- Improved Markdown rendering again

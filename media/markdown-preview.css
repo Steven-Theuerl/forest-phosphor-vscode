@@ -210,7 +210,7 @@
   padding: 0.5em 0.8em;
 }
 [data-vscode-theme-name="Forest Phosphor"] tbody tr:nth-child(even) {
-  background-color: rgba(19, 28, 16, 0.4);
+  background-color: rgba(19, 28, 16, 0.38);
 }
 
 /* Horizontal rule */

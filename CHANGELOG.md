@@ -47,3 +47,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.4.52] - 2026-05-02
 
 - Removing bloat from package
+
+## [0.4.53] - 2026-05-02
+
+- Removing bloat from package

@@ -1491,7 +1491,7 @@
       "scope": ["markup.italic"],
       "settings": {
         "fontStyle": "italic",
-        "foreground": "#D4D256"
+        "foreground": "#E8A030"
       }
     },
     {
@@ -1499,7 +1499,7 @@
       "scope": ["markup.bold", "markup.bold string"],
       "settings": {
         "fontStyle": "bold",
-        "foreground": "#E8A030"
+        "foreground": "#EA9575"
       }
     },
     {
@@ -1511,7 +1511,7 @@
       ],
       "settings": {
         "fontStyle": "bold italic",
-        "foreground": "#E8A030"
+        "foreground": "#EA9575"
       }
     },
     {

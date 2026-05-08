@@ -60,3 +60,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Updated the package.json for discoverability
 - Added new icons!
+
+## [0.4.6] - 2026-05-08
+
+- Decorators are now amber, as they are more "structural"-like than "class"-like
+- Macros in Rust are now amber too for the same reason
+- other various changes and updates to align with the design philosophy of role-based assignment

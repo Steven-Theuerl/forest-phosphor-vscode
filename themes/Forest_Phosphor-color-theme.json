@@ -1,4 +1,30 @@
 {
+  "_designPhilosophy": [
+    "Forest Phosphor — color by ROLE, not by type. Reading agent-produced",
+    "code over long sessions is the goal. Reliability over pragmatism.",
+    "",
+    "Cyan    #7AF8FF — variables, enum members, constants",
+    "Blue    #77B0FF — properties, fields, named arguments",
+    "Yellow  #D1CF32 — functions, methods (callable invocations)",
+    "FG      #A2EBA1 — keyword.control (if/else/for/while), keyword.operator.logical, punctuation, structural grammar of the language itself",
+    "Amber   #E8A030 — structural verbs: function, class, return, import; decorators (@inject, #[derive]); macros; CSS at-rules; section markers",
+    "Coral   #EA9575 — pressing attention: this, self, super, throw, unsafe, break, continue, mutations",
+    "Green   #73e165 — strings",
+    "White   #E8F0E8 — literals: numbers, booleans, null, undefined, lifetimes",
+    "Purple  #C07AC8 — concrete shapes: class, struct, enum, union, JSX components, CSS class/id selectors",
+    "Pink    #ffb4e2 — abstract shapes: interface, type, generics, primitives, traits",
+    "Italic  parameters render in foreground italic.",
+    "",
+    "Rule of thumb when adding scopes:",
+    "  1. Is it CALLABLE in this context? -> yellow.",
+    "  2. Does it MODIFY/AUGMENT another construct? -> amber.",
+    "  3. Does it DEFINE a concrete shape? -> purple.",
+    "  4. Does it DESCRIBE/CONSTRAIN a shape? -> pink.",
+    "  5. Is it a VALUE/REFERENCE? -> cyan (var) or blue (property).",
+    "  6. Is it the grammar of the language itself? -> foreground.",
+    "Context wins over type. The same `inject` is yellow when called",
+    "(`inject(x)`) and amber when used as a decorator (`@inject`)."
+  ],
   "name": "Forest Phosphor",
   "semanticHighlighting": true,
   "colors": {
@@ -1234,7 +1260,7 @@
       }
     },
     {
-      "name": "Decorator, Annotation — Purple",
+      "name": "Decorator, Annotation — Amber",
       "scope": [
         "meta.decorator",
         "tag.decorator.js entity.name.tag.js",
@@ -1244,7 +1270,7 @@
         "meta.attribute"
       ],
       "settings": {
-        "foreground": "#C07AC8"
+        "foreground": "#E8A030"
       }
     },
     {
@@ -1264,14 +1290,13 @@
       }
     },
     {
-      "name": "CSS Class, ID — Yellow",
+      "name": "CSS Class, ID — Purple",
       "scope": [
         "entity.other.attribute-name.class.css",
-        "entity.other.attribute-name.id.css",
-        "source.sass keyword.control"
+        "entity.other.attribute-name.id.css"
       ],
       "settings": {
-        "foreground": "#D4D256"
+        "foreground": "#C07AC8"
       }
     },
     {
@@ -1712,7 +1737,7 @@
       }
     },
     {
-      "name": "Python Decorator — Purple",
+      "name": "Python Decorator — Amber",
       "scope": [
         "meta.function.decorator.python support.type.python",
         "entity.name.function.decorator.python",
@@ -1721,7 +1746,7 @@
         "meta.decorator.python support.type"
       ],
       "settings": {
-        "foreground": "#C07AC8"
+        "foreground": "#E8A030"
       }
     },
     {
@@ -1872,7 +1897,7 @@
       }
     },
     {
-      "name": "Rust Macro — Cyan",
+      "name": "Rust Macro — Amber",
       "scope": [
         "support.macro.rust",
         "entity.name.function.macro.rust",
@@ -1882,11 +1907,11 @@
         "punctuation.definition.macro.rust"
       ],
       "settings": {
-        "foreground": "#7AF8FF"
+        "foreground": "#E8A030"
       }
     },
     {
-      "name": "Rust Attribute / Derive — Purple",
+      "name": "Rust Attribute / Derive — Amber",
       "scope": [
         "meta.attribute.rust",
         "meta.preprocessor.rust",
@@ -1896,7 +1921,7 @@
         "punctuation.attribute.rust"
       ],
       "settings": {
-        "foreground": "#C07AC8"
+        "foreground": "#E8A030"
       }
     },
     {
@@ -2083,13 +2108,13 @@
       }
     },
     {
-      "name": "Java Annotation — Purple",
+      "name": "Java Annotation — Amber",
       "scope": [
         "storage.type.annotation.java",
         "punctuation.definition.annotation.java"
       ],
       "settings": {
-        "foreground": "#C07AC8"
+        "foreground": "#E8A030"
       }
     },
     {
@@ -2176,14 +2201,14 @@
     "struct.defaultLibrary": "#C07AC8",
     "union": "#C07AC8",
     "union.declaration": "#C07AC8",
-    "decorator": "#C07AC8",
-    "decorator.declaration": "#C07AC8",
-    "annotation": "#C07AC8",
-    "builtinAttribute": "#C07AC8",
-    "attribute": "#C07AC8",
-    "derive": "#C07AC8",
-    "deriveHelper": "#C07AC8",
-    "toolModule": "#C07AC8",
+    "decorator": "#E8A030",
+    "decorator.declaration": "#E8A030",
+    "annotation": "#E8A030",
+    "builtinAttribute": "#E8A030",
+    "attribute": "#E8A030",
+    "derive": "#E8A030",
+    "deriveHelper": "#E8A030",
+    "toolModule": "#E8A030",
 
     "function": "#D1CF32",
     "function.declaration": "#D1CF32",
@@ -2208,10 +2233,10 @@
     "member.declaration": "#D1CF32",
     "member.static": "#D1CF32",
 
-    "macro": "#7AF8FF",
-    "macro.declaration": "#7AF8FF",
-    "macro.defaultLibrary": "#7AF8FF",
-    "macroBang": "#7AF8FF",
+    "macro": "#E8A030",
+    "macro.declaration": "#E8A030",
+    "macro.defaultLibrary": "#E8A030",
+    "macroBang": "#E8A030",
 
     "variable": "#7AF8FF",
     "variable.constant": "#7AF8FF",
@@ -2310,7 +2335,7 @@
     "*.modification": "#EA9575",
 
     "tomlArrayKey": "#77B0FF",
-    "tomlTableKey": "#C07AC8",
+    "tomlTableKey": "#E8A030",
 
     "yamlAlias": "#7AF8FF",
     "yamlAnchor": "#7AF8FF"

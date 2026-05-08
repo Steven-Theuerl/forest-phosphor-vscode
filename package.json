@@ -2,7 +2,7 @@
   "name": "forest-phosphor",
   "displayName": "Forest Phosphor",
   "description": "A semantic dark theme built for reading code in the age of AI agents — phosphor CRT aesthetic, role-based coloring, and three-tier visual hierarchy across TypeScript, Python, Rust, Svelte, and more.",
-  "version": "0.4.55",
+  "version": "0.4.6",
   "publisher": "StevenTheuerl",
   "license": "MIT",
   "homepage": "https://forestphosphor.dev",

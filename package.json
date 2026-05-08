@@ -1,15 +1,19 @@
 {
   "name": "forest-phosphor",
   "displayName": "Forest Phosphor",
-  "description": "A dark theme inspired by CRT monitors — natural backdrops that are not too contrasting, glowing accents, and distinguished identities.",
-  "version": "0.4.54",
+  "description": "A semantic dark theme built for reading code in the age of AI agents — phosphor CRT aesthetic, role-based coloring, and three-tier visual hierarchy across TypeScript, Python, Rust, Svelte, and more.",
+  "version": "0.4.55",
   "publisher": "StevenTheuerl",
   "license": "MIT",
+  "homepage": "https://forestphosphor.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/Steven-Theuerl/forest-phosphor-vscode"
   },
-  "icon": "icon.png",
+  "bugs": {
+    "url": "https://github.com/Steven-Theuerl/forest-phosphor-vscode/issues"
+  },
+  "icon": "icon.gif",
   "engines": {
     "vscode": "^1.109.0"
   },
@@ -19,11 +23,40 @@
   "keywords": [
     "dark",
     "theme",
+    "color theme",
+    "dark theme",
     "phosphor",
     "forest",
     "green",
+    "mint",
     "CRT",
-    "color theme"
+    "retro",
+    "semantic",
+    "semantic highlighting",
+    "semantic syntax",
+    "role-based",
+    "syntax highlighting",
+    "readability",
+    "code review",
+    "low contrast",
+    "easy on eyes",
+    "long sessions",
+    "TypeScript",
+    "JavaScript",
+    "Python",
+    "Rust",
+    "Svelte",
+    "Go",
+    "bracket pair",
+    "diff",
+    "terminal",
+    "AI",
+    "agentic",
+    "phosphorescent",
+    "forest green",
+    "dark green",
+    "monokai alternative",
+    "one dark alternative"
   ],
   "galleryBanner": {
     "color": "#0F180C",

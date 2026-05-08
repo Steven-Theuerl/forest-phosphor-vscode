@@ -55,3 +55,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.4.54] - 2026-05-07
 
 - Meaningful updates to the Readme
+
+## [0.4.55] - 2026-05-07
+
+- Updated the package.json for discoverability
+- Added new icons!
